@@ -36,5 +36,4 @@ Extensions:
 
 
 NOTES:
-Try to make a way to highlight the buttons that are available to click. FRAME BORDERS
-Make the button text bigger too.
+Need to add the case for clicking a button in a position in which the board is won (or tied). Should allow to go anywhere
