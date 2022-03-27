@@ -4,16 +4,52 @@ from tkinter import messagebox
 root = Tk()
 root.title('Strategic TicTacToe')
 
+def endGame():
+    pass
+
 def checkWin(boardNum):
+    global count
+    board = buttons[boardNum]
+    winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ]
+    winBoard = False
+    for i in winConditions:
+        if board[i[0]] == board[i[1]] == board[i[2]] and not board[i[0]]['text'] == ' ':
+            boardWinners[boardNum] = board[i[0]]['text']
+            winBoard = True
+            count += 1
+    if boardCounts[boardNum] == 9 and winBoard == True:
+        boardWinners[boardNum] = ' '
+
+    for i in winConditions:
+        if boardWinners[i[0]] == boardWinners[i[1]] == boardWinners[i[2]] and not boardWinners[i[0]] == None and not boardWinners[i[0]] == ' ':
+            endGame()
     pass
 
 def disableButtons(position):
-    for x in range(9):
-        for y in range(9):
-            if x == position[1]:
-                buttons[x][y].config(state=NORMAL)
+    for i in range(len(buttons)):
+        for j in buttons[i]:
+            if i == position[1]:
+                if j['text'] == ' ':
+                    j.config(state=NORMAL)
+                else:
+                    j.config(state=DISABLED)
             else:
-                buttons[x][y].config(state=DISABLED)
+                j.config(state=DISABLED)
+
+    for i in range(len(frames)):
+        if i == position[1]:
+            frames[i]['highlightbackground'] = 'green'
+        else:
+            frames[i]['highlightbackground'] = 'black'
 
 def bClick(b):
     global clicked
@@ -33,7 +69,9 @@ def bClick(b):
     checkWin(position[0])
 
 def reset():
-    global frames, buttons, clicked, boardCounts
+    global frames, buttons, clicked, boardCounts, boardWinners, count
+    boardWinners = [None] * 9
+    count = 0
     clicked = True # X goes first
     # create 9 frames with a tictactoe board in each
     boardCounts = [0] * 9
@@ -46,7 +84,7 @@ def reset():
                 master=root,
                 bg='SystemButtonFace',
                 highlightbackground='black',
-                highlightthickness=2
+                highlightthickness=3
             )
             f.grid(row=i, column=j)
             frames.append(f)
@@ -57,10 +95,9 @@ def reset():
                     b = Button(
                         master=f,
                         text=' ',
-                        width=6,
-                        height=3,
-                        # relief=SOLID,
-                        # borderwidth=2
+                        width=5,
+                        height=2,
+                        font='Helvetica 15 bold'
                     )
                     b.grid(row=x, column=y)
                     b.configure(command=lambda b=b: bClick(b))

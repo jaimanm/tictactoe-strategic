@@ -36,5 +36,5 @@ Extensions:
 
 
 NOTES:
-Try to make a way to highlight the buttons that are available to click.
+Try to make a way to highlight the buttons that are available to click. FRAME BORDERS
 Make the button text bigger too.
