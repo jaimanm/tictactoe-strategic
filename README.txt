@@ -32,3 +32,9 @@ Extensions:
 1. Add a menu bar to reset the game board
 2. Somehow use pictures as the buttons to make it look nicer
 3. **AMBITIOUS** make a 1-player mode with some kind of AI that you play against
+
+
+
+NOTES:
+Try to make a way to highlight the buttons that are available to click.
+Make the button text bigger too.
