@@ -1,5 +1,4 @@
-
-from Board import Board
-
-
-Board()
+thing = False
+print(thing)
+thing = thing
+print(thing)

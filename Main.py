@@ -4,7 +4,14 @@ from Board import Board
 root = Tk()
 root.title('Strategic TicTacToe')
 
+def reset():
+    global frames, boards
+    global clicked
+    clicked = True # X goes first
+    setup()
+
 def setup():
+    global frames, boards
     # create 9 frames with a tictactoe board in each
     frames = [None] * 9
     boards= [None] * 9
@@ -18,7 +25,8 @@ def setup():
                 highlightthickness=2
             )
             frames[index].grid(row=i, column=j)
-            boards[index] = Board(frames[index], index)
+            boards[index] = Board(frames[index], index, clicked)
 
-setup()
+reset()
+print(clicked)
 root.mainloop()
