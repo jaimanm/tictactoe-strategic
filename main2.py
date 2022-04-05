@@ -4,13 +4,15 @@ from tkinter import messagebox
 root = Tk()
 root.title('Strategic TicTacToe')
 
-def endGame(winner):
+def endGame():
     if winner == ' ': messagebox.showinfo('TicTacToe Strategic', "It's a tie.")
     elif winner == 'X' or winner == 'O': messagebox.showinfo('TicTacToe Strategic', winner + ' has won!')
-    else: pass
+    if not winner == None:
+        turnLabel['text'] = 'Game Over'
+        updateLabel['text'] = 'Reset to Play Again.'
 
 def checkWin(boardNum):
-    global count
+    global count, winner
     board = buttons[boardNum]
     winConditions = [
         [0, 1, 2],
@@ -25,26 +27,22 @@ def checkWin(boardNum):
     winBoard = False
     for i in winConditions:
         if board[i[0]]['text'] == board[i[1]]['text'] == board[i[2]]['text'] and not board[i[0]]['text'] == ' ':
-            print(board[i[0]]['text'], 'wins on board', boardNum+1)
+            updateLabel['text'] = board[i[0]]['text'] + ' wins on board ' + str(boardNum+1)
             boardWinners[boardNum] = board[i[0]]['text']
             winBoard = True
             count += 1
             break
     if boardCounts[boardNum] == 9 and winBoard == False:
-        print('tie on board', boardNum)
+        updateLabel['text'] = 'tie on board ' + str(boardNum)
         boardWinners[boardNum] = ' '
         count += 1
         winBoard = True
 
-    # case for tie across the whole board
-
     for i in winConditions:
         if boardWinners[i[0]] == boardWinners[i[1]] == boardWinners[i[2]] and not boardWinners[i[0]] == None:
-            endGame(boardWinners[i[0]])
             winner = boardWinners[i[0]]
-        elif count == 9:
-            endGame(' ')
-            winner = ' '
+    if count == 9:
+        winner = ' '
 
 def disableButtons(position):
 
@@ -88,6 +86,9 @@ def disableButtons(position):
                     if i == position[1] and b['text'] == ' ': b.config(state=NORMAL)
                     else: b.config(state=DISABLED)
 
+def close_window():
+    root.destroy()
+    exit()
 
 def bClick(b):
     global clicked
@@ -102,13 +103,18 @@ def bClick(b):
         b['text'] = 'O'
         b['bg'] = 'red'
     clicked = not clicked
+    if clicked:
+        turnLabel['text'] = "Player X's turn"
+    else:
+        turnLabel['text'] = "Player O's turn"
+    
     boardCounts[position[0]] += 1
     checkWin(position[0])
     disableButtons(position)
-    endGame(winner)
+    endGame()
 
 def reset():
-    global frames, buttons, clicked, boardCounts, boardWinners, count, winner
+    global frames, buttons, clicked, boardCounts, boardWinners, count, winner, turnLabel, updateLabel
     boardWinners = [None] * 9
     winner = None
     count = 0
@@ -142,7 +148,33 @@ def reset():
                     b.grid(row=x, column=y)
                     b.configure(command=lambda b=b: bClick(b))
                     buttons[index].append(b)
+    
+    turnLabel = Label(
+        master=root,
+        bg='SystemButtonFace',
+        font='Helvetica 10 italic bold',
+        text="Player X's turn"
+    )
+    turnLabel.grid(row=4,column=0)
 
+    updateLabel = Label(
+        master=root,
+        bg='SystemButtonFace',
+        font='Helvetica 10 italic',
+        text=''
+    )
+    updateLabel.grid(row=4, column=1, columnspan=2)
+myMenu = Menu(root)
+root.config(menu=myMenu)
+# create menu
+myMenu = Menu(root)
+root.config(menu=myMenu)
+
+# create Options menu
+optionsMenu = Menu(myMenu, tearoff=False)
+myMenu.add_cascade(label='Options', menu=optionsMenu)
+optionsMenu.add_command(label='Reset Board', command=reset)
+optionsMenu.add_command(label='Exit', command=close_window)
 
 reset()
 root.mainloop()
