@@ -17,7 +17,7 @@ Imagine a 3x3 grid of tictactoe boards:
 
 START - Player X chooses any spot on the board.
 1. Switch players 
-    2a. could use boolean player: True='X', False='O' using player = -player to toggle
+    1a. could use boolean player: True='X', False='O' using player = -player to toggle
 2. Player chooses a spot in the corresponding section
     ex. if X went in 3.2, then O goes in 2.x
 3. If there's a win on any board, then disable it and change its color to identify (X=blue, O=red)
