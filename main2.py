@@ -4,7 +4,7 @@ from tkinter import messagebox
 root = Tk()
 root.title('Strategic TicTacToe')
 
-def endGame():
+def endGame(position):
     if winner == ' ': messagebox.showinfo('TicTacToe Strategic', "It's a tie.")
     elif winner == 'X' or winner == 'O': messagebox.showinfo('TicTacToe Strategic', winner + ' has won!')
     if not winner == None:
@@ -71,7 +71,7 @@ def disableButtons(position):
         if not boardWinners[position[1]] == None:
             for i in range(len(frames)):
                 if i == position[1] or not boardWinners[i] == None: frames[i]['highlightbackground'] = 'black'
-                else: frames[i]['highlightbackground'] = 'green'
+                else: frames[i]['highlightbackground'] = 'cyan'
             for i in range(len(buttons)):
                 for b in buttons[i]:
                     if i == position[1] or not boardWinners[i] == None or not b['text'] == ' ': b.config(state=DISABLED)
@@ -79,7 +79,7 @@ def disableButtons(position):
         # otherwise make only that frame available
         else:
             for i in range(len(frames)):
-                if i == position[1]: frames[i]['highlightbackground'] = 'green'
+                if i == position[1]: frames[i]['highlightbackground'] = 'cyan'
                 else: frames[i]['highlightbackground'] = 'black'
             for i in range(len(buttons)):
                 for b in buttons[i]:
@@ -92,6 +92,7 @@ def close_window():
 
 def bClick(b):
     global clicked
+    position = []
     for i in buttons:
         if b in i:
             position = [buttons.index(i), i.index(b)]
@@ -111,7 +112,7 @@ def bClick(b):
     boardCounts[position[0]] += 1
     checkWin(position[0])
     disableButtons(position)
-    endGame()
+    endGame(position)
 
 def reset():
     global frames, buttons, clicked, boardCounts, boardWinners, count, winner, turnLabel, updateLabel
@@ -129,7 +130,7 @@ def reset():
             f = Frame(
                 master=root,
                 bg='SystemButtonFace',
-                highlightbackground='green',
+                highlightbackground='cyan',
                 highlightthickness=3
             )
             f.grid(row=i, column=j)
